@@ -24,7 +24,8 @@ const uri = `mongodb+srv://Ivlay:${DB_PASSWORD}@cluster0.ni2kw.mongodb.net/${DB_
 mongoose
     .connect(uri, {
         useNewUrlParser    : true,
-        useUnifiedTopology : true
+        useUnifiedTopology : true,
+        useCreateIndex     : true
     })
     .then(() => {
         console.log('Connected MongoDB');

@@ -27,6 +27,10 @@ export const resolvers: IResolvers = {
         async login(_, { userName, password }) {
             const { errors, valid } = validateLoginInput({userName, password});
 
+            if (!valid) {
+                throw new UserInputError('Errors', { errors });
+            };
+
             const user = await User.findOne({ userName });
 
             if (!user) {
