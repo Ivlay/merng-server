@@ -8,14 +8,12 @@ export interface IUserDocument extends Document {
     password        : string,
     confirmPassword : string;
     token?          : string
-    createdAt       : string;
 };
 
 const userSchema = new Schema({
-    userName  : String,
+    userName  : { type: String, unique: true },
     password  : String,
-    email     : String,
-    createdAt : String
-});
+    email     : { type: String, unique: true },
+}, { timestamps: true });
 
 export default model<IUserDocument>('User', userSchema);

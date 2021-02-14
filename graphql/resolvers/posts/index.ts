@@ -36,9 +36,8 @@ export const resolvers: IResolvers = {
 
             const newPost = new Post({
                 body,
-                user: user.id,
-                userName: user.userName,
-                createdAt: new Date().toISOString()
+                user     : user.id,
+                userName : user.userName
             });
 
             const post = await newPost.save();

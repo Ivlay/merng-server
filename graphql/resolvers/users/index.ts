@@ -63,12 +63,12 @@ export const resolvers: IResolvers = {
                 throw new UserInputError('Errors', { errors });
             };
 
-            const user = await User.findOne({userName});
+            const user: [] = await User.find({ $or: [ { userName }, { email } ] });
 
-            if (user) {
-                throw new UserInputError('User name alredy exist', {
+            if (user.length) {
+                throw new UserInputError('User alredy exist', {
                     errors: {
-                        userName: 'User name alredy exist'
+                        userName: 'User alredy exist'
                     }
                 });
             };
@@ -78,8 +78,7 @@ export const resolvers: IResolvers = {
             const newUser = new User({
                 email,
                 userName,
-                password,
-                createdAt: new Date().toISOString()
+                password
             });
             
             const res = await newUser.save();

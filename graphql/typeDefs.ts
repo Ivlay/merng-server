@@ -4,12 +4,13 @@ export default gql`
     type Post {
         id           : ID!
         body         : String!
-        createdAt    : String!
         userName     : String!
         comments     : [Comment]!
         likes        : [Like]!
         likeCount    : Int!
         commentCount : Int!
+        createdAt    : String!
+        updatedAt    : Date!
     }
 
     type Comment {
@@ -38,6 +39,7 @@ export default gql`
         token     : String!
         userName  : String!
         createdAt : String!
+        updatedAt : Date!
     }
 
     type Query {
@@ -58,4 +60,6 @@ export default gql`
     type Subscription {
         newPost: Post!
     }
+
+    scalar Date
 `;
