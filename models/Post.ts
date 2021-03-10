@@ -1,5 +1,16 @@
-import { model, Schema } from 'mongoose';
-//TODO: write an interface
+import { model, Schema, Document } from 'mongoose';
+
+export interface IPostDocument extends Document {
+    _doc      : any;
+    id?       : string;
+    body      : string;
+    userName  : string;
+    createdAt : string;
+    updatedAt : number;
+    comments  : Pick<IPostDocument, 'body' | 'userName' | 'createdAt' | 'id'>[];
+    likes     : Pick<IPostDocument, 'userName' | 'createdAt' | 'id'>[];
+};
+
 const postSchema = new Schema({
     body      : String,
     userName  : String,
@@ -23,4 +34,4 @@ const postSchema = new Schema({
     }
 }, { timestamps: true });
 
-export default model('Post', postSchema);
+export default model<IPostDocument>('Post', postSchema);

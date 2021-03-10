@@ -1,10 +1,13 @@
 import { IResolvers }          from 'graphql-tools';
 import bcrypt                  from 'bcryptjs';
 import jwt                     from 'jsonwebtoken';
-import User, { IUserDocument } from '../../../models/User';
+import User, { IUserDocument } from '@models/User';
 import { config }              from 'dotenv';
 import { UserInputError }      from 'apollo-server';
-import { validateRegisterInput, validateLoginInput } from '../../../utils/validator';
+import {
+    validateRegisterInput,
+    validateLoginInput
+} from '@utils/validator';
 
 config();
 
@@ -19,7 +22,7 @@ const generateToken = (user: IUserDocument) => {
         id       : user.id,
         email    : user.email,
         userName : user.userName
-    }, SECRET_KEY as string, {expiresIn: '1h'})
+    }, SECRET_KEY as string, {expiresIn: '12h'})
 };
 
 export const resolvers: IResolvers = {
@@ -31,7 +34,7 @@ export const resolvers: IResolvers = {
                 throw new UserInputError('Errors', { errors });
             };
 
-            const user = await User.findOne({ userName });
+            const user: IUserDocument = await User.findOne({ userName });
 
             if (!user) {
                 errors.userName = 'User not found';
@@ -67,7 +70,7 @@ export const resolvers: IResolvers = {
                 throw new UserInputError('Errors', { errors });
             };
 
-            const user: [] = await User.find({ $or: [ { userName }, { email } ] });
+            const user: IUserDocument[] = await User.find({ $or: [ { userName }, { email } ] });
 
             if (user.length) {
                 throw new UserInputError('User alredy exist', {

@@ -3,7 +3,7 @@ import jwt                     from 'jsonwebtoken';
 import { config }              from 'dotenv';
 import { Request }             from 'express';
 
-import { IUserDocument }       from '../models/User';
+import { IUserDocument }       from '@models/User';
 
 config();
 

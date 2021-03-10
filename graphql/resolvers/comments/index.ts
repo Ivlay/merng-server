@@ -1,9 +1,9 @@
 import { IResolvers }                          from 'graphql-tools';
 import { AuthenticationError, UserInputError } from 'apollo-server';
 
-import Post                                    from '../../../models/Post';
+import Post, { IPostDocument }                 from '@models/Post';
 
-import checkAuth                               from '../../../utils/checkAuth';
+import checkAuth                               from '@utils/checkAuth';
 
 export const resolvers: IResolvers = {
     Mutation: {
@@ -15,10 +15,10 @@ export const resolvers: IResolvers = {
                     errors: {
                         body: 'Comment body must not empty'
                     }
-                })
+                });
             };
 
-            const post = await Post.findById(postId)
+            const post: IPostDocument = await Post.findById(postId)
 
             if (post) {
                 post.comments.unshift({
@@ -29,18 +29,18 @@ export const resolvers: IResolvers = {
 
                 await post.save();
 
-                return post
+                return post;
             } else {
                 throw new UserInputError('Post not found')
-            }
+            };
         },
         deleteComment: async(_, { postId, commentId }, context) => {
             const { userName } = checkAuth(context);
 
-            const post = await Post.findById(postId);
+            const post: IPostDocument = await Post.findById(postId);
 
             if (post) {
-                const commentIndex = post.comments.findIndex((c: { id: any; }) => c.id === commentId);
+                const commentIndex = post.comments.findIndex((c) => c.id === commentId);
 
                 if (commentIndex + 1 && post.comments[commentIndex].userName === userName || userName === 'Ivlay') {
                     post.comments.splice(commentIndex, 1);

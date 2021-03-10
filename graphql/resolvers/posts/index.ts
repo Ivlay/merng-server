@@ -1,24 +1,23 @@
 import { IResolvers }                          from 'graphql-tools';
 import { AuthenticationError, UserInputError } from 'apollo-server';
-import Post                                    from '../../../models/Post';//TODO: write an aliases
-import checkAuth                               from '../../../utils/checkAuth'; 
+import Post, { IPostDocument }                 from '@models/Post';
+import checkAuth                               from '@utils/checkAuth';
 
 export const resolvers: IResolvers = {
     Query: {
         async getPosts() {
             try {
-                const posts = await Post.find().sort({ createdAt: -1 });
-                return posts;
+                return await Post.find().sort({ updatedAt: -1 }) as IPostDocument[];
             } catch (error) {
                 console.error(error);
             };
         },
         async getPost(_, { postId }) {
             try {
-                const post = await Post.findById(postId);
+                const post: IPostDocument = await Post.findById(postId);
 
                 if (post) {
-                    return post
+                    return post;
                 } else {
                     throw new Error('Post not found')
                 };
@@ -46,15 +45,15 @@ export const resolvers: IResolvers = {
                 newPost: post
             });
 
-            return post
+            return post;
         },
         async deletePost(_, { postId }, context) {
             const user = checkAuth(context);
 
             try {
-                const post = await Post.findById(postId);
+                const post: IPostDocument = await Post.findById(postId);
 
-                if (user.userName === post.username || user.userName === 'Ivlay') {
+                if (user.userName === post.userName || user.userName === 'Ivlay') {
                     await post.delete();
 
                     return 'Post deleted';
@@ -68,7 +67,7 @@ export const resolvers: IResolvers = {
         likePost: async(_, { postId }, context) => {
             const { userName } = checkAuth(context);
 
-            const post = await Post.findById(postId);
+            const post: IPostDocument = await Post.findById(postId);
 
             if (post) {
                 if (post.likes.find((like: { userName: string; }) => like.userName === userName)) {

@@ -1,8 +1,9 @@
+import 'module-alias/register';
 import { ApolloServer, PubSub } from 'apollo-server';
 import mongoose                 from 'mongoose';
 import { config }               from 'dotenv';
-import typeDefs                 from './graphql/typeDefs';
-import resolvers                from './graphql/resolvers';
+import typeDefs                 from '@graphql/typeDefs';
+import resolvers                from '@graphql/resolvers';
 
 config();
 

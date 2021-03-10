@@ -1,4 +1,4 @@
-import { IUserDocument } from '../models/User';
+import { IUserDocument } from '@models/User';
 
 type TValidateRegisterInput = Pick<IUserDocument, 'userName' | 'email' | 'password' | 'confirmPassword'>;
 
